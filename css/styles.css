@@ -5,18 +5,18 @@
 }
 
 :root {
-    --primary-color: #4f46e5;
-    --primary-dark: #4338ca;
-    --secondary-color: #64748b;
+    --primary-color: #33cc33;
+    --primary-dark: #009933;
+    --secondary-color: #476b6b;
     --success-color: #22c55e;
-    --warning-color: #f59e0b;
+    --warning-color: #ffcc00;
     --danger-color: #ef4444;
-    --background: #f8fafc;
+    --background: #ccffcc;
     --sidebar-bg: #ffffff;
     --card-bg: #ffffff;
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --border-color: #e2e8f0;
+    --text-primary: #001a00;
+    --text-secondary: #00804d;
+    --border-color: #9fdfbf;
 }
 
 body {
