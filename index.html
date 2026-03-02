@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cicada · Development Task Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-bug"></i>
+                <h1>cicada</h1>
+            </div>
+            
+            <div class="filters">
+                <h3>Filters</h3>
+                <ul>
+                    <li class="active" data-filter="all">
+                        <i class="fas fa-tasks"></i> All Tasks
+                        <span class="count" id="all-count">0</span>
+                    </li>
+                    <li data-filter="active">
+                        <i class="fas fa-play"></i> Active
+                        <span class="count" id="active-count">0</span>
+                    </li>
+                    <li data-filter="completed">
+                        <i class="fas fa-check"></i> Completed
+                        <span class="count" id="completed-count">0</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="tags-section">
+                <h3>Tags <i class="fas fa-plus" id="add-tag-btn"></i></h3>
+                <div class="tags-list" id="tags-list">
+                    <!-- Tags will be dynamically added here -->
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="progress">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <p id="progress-text">0/0 tasks completed</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <h2 id="current-view">All Tasks</h2>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-input" placeholder="Search tasks...">
+                    </div>
+                    <button class="btn btn-primary" id="add-task-btn">
+                        <i class="fas fa-plus"></i> New Task
+                    </button>
+                </div>
+            </header>
+
+            <!-- Task Form (Hidden by default) -->
+            <div class="task-form-container" id="task-form-container" style="display: none;">
+                <form id="task-form">
+                    <h3>Create New Task</h3>
+                    <div class="form-group">
+                        <label for="task-title">Title</label>
+                        <input type="text" id="task-title" required placeholder="e.g., Implement user authentication">
+                    </div>
+                    <div class="form-group">
+                        <label for="task-description">Description</label>
+                        <textarea id="task-description" rows="3" placeholder="Describe the task..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="task-priority">Priority</label>
+                            <select id="task-priority">
+                                <option value="low">Low</option>
+                                <option value="medium" selected>Medium</option>
+                                <option value="high">High</option>
+                                <option value="critical">Critical</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="task-estimate">Estimate (hours)</label>
+                            <input type="number" id="task-estimate" min="0" step="0.5" value="2">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-tags">Tags (comma-separated)</label>
+                        <input type="text" id="task-tags" placeholder="frontend, bug, feature">
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="cancel-task-btn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Task</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tasks List -->
+            <div class="tasks-list" id="tasks-list">
+                <!-- Tasks will be dynamically added here -->
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
