@@ -17,6 +17,7 @@
     --text-primary: #0f172a;
     --text-secondary: #475569;
     --border-color: #e2e8f0;
+    --overlayer-color: #00000078;
 }
 
 body {
@@ -41,6 +42,63 @@ body {
     position: fixed;
     height: 100vh;
     overflow-y: auto;
+}
+
+#project-contextmenu-overlayer{
+    width: 100%;
+    width: -webkit-fill-available;
+    height: 100%;
+    height: -webkit-fill-available;
+    position: fixed;
+    left: 0;
+    top: 0;
+    /*! background-color: var(--overlayer-color); */
+    z-index: 9;
+    display: none;
+}
+
+@keyframes scaleAnimate{
+    from {
+        scale: 0;
+    }
+    
+    to {
+        scale: 1;
+    }
+}
+
+#project-contextmenu {
+    position: absolute;
+    width: 200px;
+    background-color: var(--card-bg);
+    box-shadow: 0 0 6px 0 #00000075;
+    border-radius: 8px;
+    left: 0;
+    animation: scaleAnimate ease-in-out .15s;
+    overflow: auto;
+    transform-origin: left top;
+}
+
+.menu-btn {
+    display: flex;
+    padding: 10px 20px;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    height: 40px;
+    background-color: #fff;
+}
+
+.menu-btn:hover {
+    background-color: var(--border-color); 
+}
+
+.menu-btn > i {
+    margin-right: 12px; 
 }
 
 .logo {

@@ -70,10 +70,15 @@ class CicadaApp {
     }
 
     setupEventListeners() {
+        // Disabling Default ContextMenu
+        addEventListener("contextmenu" ,(e)=>{
+            e.preventDefault();
+        });
+
         // Filter clicks
-        document.querySelectorAll('.filters li').forEach(item => {
+        $$('.filters li').forEach(item => {
             item.addEventListener('click', (e) => {
-                document.querySelectorAll('.filters li').forEach(li => li.classList.remove('active'));
+                $$('.filters li').forEach(li => li.classList.remove('active'));
                 item.classList.add('active');
                 this.currentFilter = item.dataset.filter;
                 this.currentTag = null;
@@ -83,51 +88,82 @@ class CicadaApp {
         });
 
         // Add project button
-        document.getElementById('add-project-btn').addEventListener('click', () => {
+        $('#add-project-btn').addEventListener('click', () => {
             this.showProjectModal();
         });
 
         // Add task button
-        document.getElementById('add-task-btn').addEventListener('click', () => {
+        $('#add-task-btn').addEventListener('click', () => {
             if (!this.currentProject) {
                 alert('Please select or create a project first');
                 return;
             }
-            document.getElementById('task-form-container').style.display = 'block';
-            document.getElementById('task-title').focus();
+            $('#task-form-container').style.display = 'block';
+            $('#task-title').focus();
         });
 
         // Cancel task button
-        document.getElementById('cancel-task-btn').addEventListener('click', () => {
-            document.getElementById('task-form-container').style.display = 'none';
-            document.getElementById('task-form').reset();
+        $('#cancel-task-btn').addEventListener('click', () => {
+            $('#task-form-container').style.display = 'none';
+            $('#task-form').reset();
         });
 
         // Task form submit
-        document.getElementById('task-form').addEventListener('submit', (e) => {
+        $('#task-form').addEventListener('submit', (e) => {
             e.preventDefault();
             this.createTask();
         });
 
         // Search input
-        document.getElementById('search-input').addEventListener('input', (e) => {
+        $('#search-input').addEventListener('input', (e) => {
             this.searchTerm = e.target.value.toLowerCase();
             this.render();
         });
 
         // Add tag button
-        document.getElementById('add-tag-btn').addEventListener('click', () => {
+        $('#add-tag-btn').addEventListener('click', () => {
             const tagName = prompt('Enter tag name:');
             if (tagName && tagName.trim()) {
                 this.tags.add(tagName.trim());
                 this.renderTags();
             }
         });
+
+        // Project's ContextMenu Area
+        // Hiding the menu
+        $('#project-contextmenu-overlayer').addEventListener("click", (e)=>{
+            if(e.target.id != "project-contextmenu-overlayer") return;
+            e.target.style.display = "none";
+        });
+
+        $('#project-contextmenu-overlayer').addEventListener("contextmenu", (e)=>{
+            if(e.target.id != "project-contextmenu-overlayer") return;
+            e.target.style.display = "none";
+        });
+
+        // Edit Button
+        $('#project-contextmenu-overlayer #edit-project').addEventListener("click", (e)=>{
+            const projectId = parseInt($("#project-contextmenu-overlayer").getAttribute("projectId"));
+            let project = this.projects.filter( p => p.id == projectId )[0];
+            let newName = prompt("Enter a new name for (" + project.name + "):");
+            project.name = newName;
+            this.render();
+            this.saveData();
+            $('#project-contextmenu-overlayer').click();
+        });    
+
+        // Delete Button
+        $('#project-contextmenu-overlayer #delete-project').addEventListener("click", (e)=>{
+            const projectId = parseInt($("#project-contextmenu-overlayer").getAttribute("projectId"));
+            this.deleteProject(projectId);
+            $('#project-contextmenu-overlayer').click();
+        });    
+
     }
 
     showProjectModal() {
         // Create modal if it doesn't exist
-        let modal = document.getElementById('project-modal');
+        let modal = $('#project-modal');
         if (!modal) {
             modal = document.createElement('div');
             modal.id = 'project-modal';
@@ -152,13 +188,13 @@ class CicadaApp {
             document.body.appendChild(modal);
 
             // Add event listeners for modal
-            document.getElementById('cancel-project-btn').addEventListener('click', () => {
+            $('#cancel-project-btn').addEventListener('click', () => {
                 modal.classList.remove('active');
             });
 
-            document.getElementById('save-project-btn').addEventListener('click', () => {
-                const name = document.getElementById('project-name').value.trim();
-                const color = document.getElementById('project-color').value;
+            $('#save-project-btn').addEventListener('click', () => {
+                const name = $('#project-name').value.trim();
+                const color = $('#project-color').value;
                 
                 if (name) {
                     this.createProject(name, color);
@@ -175,7 +211,7 @@ class CicadaApp {
         }
 
         modal.classList.add('active');
-        document.getElementById('project-name').focus();
+        $('#project-name').focus();
     }
 
     createProject(name, color) {
@@ -230,9 +266,9 @@ class CicadaApp {
             this.searchTerm = '';
             
             // Update UI
-            document.querySelectorAll('.filters li').forEach(li => li.classList.remove('active'));
+            $$('.filters li').forEach(li => li.classList.remove('active'));
             document.querySelector('[data-filter="all"]').classList.add('active');
-            document.getElementById('search-input').value = '';
+            $('#search-input').value = '';
             
             this.updateTags();
             this.updateCurrentViewTitle();
@@ -242,7 +278,7 @@ class CicadaApp {
     }
 
     updateCurrentViewTitle() {
-        const viewTitle = document.getElementById('current-view');
+        const viewTitle = $('#current-view');
         if (this.currentProject) {
             let title = `${this.currentProject.name} / `;
             if (this.currentTag) {
@@ -255,11 +291,11 @@ class CicadaApp {
     }
 
     createTask() {
-        const title = document.getElementById('task-title').value;
-        const description = document.getElementById('task-description').value;
-        const priority = document.getElementById('task-priority').value;
-        const estimate = document.getElementById('task-estimate').value;
-        const tagsInput = document.getElementById('task-tags').value;
+        const title = $('#task-title').value;
+        const description = $('#task-description').value;
+        const priority = $('#task-priority').value;
+        const estimate = $('#task-estimate').value;
+        const tagsInput = $('#task-tags').value;
 
         const task = {
             id: Date.now(),
@@ -278,8 +314,8 @@ class CicadaApp {
         this.render();
         
         // Reset and hide form
-        document.getElementById('task-form').reset();
-        document.getElementById('task-form-container').style.display = 'none';
+        $('#task-form').reset();
+        $('#task-form-container').style.display = 'none';
     }
 
     toggleTask(id) {
@@ -334,7 +370,7 @@ class CicadaApp {
     }
 
     renderProjects() {
-        const projectsList = document.getElementById('projects-list');
+        const projectsList = $('#projects-list');
         if (!projectsList) return;
 
         projectsList.innerHTML = this.projects.map(project => {
@@ -353,23 +389,48 @@ class CicadaApp {
         }).join('');
 
         // Add click handlers
-        document.querySelectorAll('.project-item').forEach(item => {
+        $$('.project-item').forEach(item => {
             item.addEventListener('click', () => {
                 const projectId = parseInt(item.dataset.projectId);
                 this.switchProject(projectId);
             });
 
-            // Add delete option (right-click or long press)
+            // // Add delete option (right-click or long press)
+            // item.addEventListener('contextmenu', (e) => {
+            //     e.preventDefault();
+            //     const projectId = parseInt(item.dataset.projectId);
+            //     this.deleteProject(projectId);
+            // });
+            
+
+            //Display context menu 
             item.addEventListener('contextmenu', (e) => {
                 e.preventDefault();
-                const projectId = parseInt(item.dataset.projectId);
-                this.deleteProject(projectId);
+                const overlayer = $('#project-contextmenu-overlayer');
+                const menu = overlayer.querySelector("#project-contextmenu");
+                menu.style.left = e.clientX + "px";
+                menu.style.top = e.clientY + "px";
+                overlayer.style.display = "block";
+                overlayer.setAttribute("projectId", item.dataset.projectId);
             });
+
+            //Double for Editing Project's name
+            // item.addEventListener('contextmenu', (e) => {
+            //     const projectId = parseInt(item.dataset.projectId);
+
+            //     let newName = prompt("Rename (" + (this.projects.filter( p => p.id == projectId )[0].name) + "):");
+            //     if(newName.length != 0){
+            //         this.projects.filter( p => p.id == projectId )[0].name = newName;
+            //     }
+            //     this.render();
+            //     this.saveData();
+            // });
+
         });
     }
 
     renderTasks() {
-        const tasksList = document.getElementById('tasks-list');
+        const tasksList = $('#tasks-list');
         const filteredTasks = this.getFilteredTasks();
 
         if (!this.currentProject) {
@@ -418,7 +479,7 @@ class CicadaApp {
         `).join('');
 
         // Add event listeners to new tasks
-        document.querySelectorAll('.task-card').forEach(card => {
+        $$('.task-card').forEach(card => {
             const taskId = parseInt(card.dataset.taskId);
             
             card.querySelector('.task-checkbox').addEventListener('change', (e) => {
@@ -439,17 +500,17 @@ class CicadaApp {
         const completed = projectTasks.filter(t => t.completed).length;
         const active = total - completed;
 
-        document.getElementById('all-count').textContent = total;
-        document.getElementById('active-count').textContent = active;
-        document.getElementById('completed-count').textContent = completed;
+        $('#all-count').textContent = total;
+        $('#active-count').textContent = active;
+        $('#completed-count').textContent = completed;
 
         const progress = total > 0 ? (completed / total) * 100 : 0;
-        document.getElementById('progress-bar').style.width = `${progress}%`;
-        document.getElementById('progress-text').textContent = `${completed}/${total} tasks completed`;
+        $('#progress-bar').style.width = `${progress}%`;
+        $('#progress-text').textContent = `${completed}/${total} tasks completed`;
     }
 
     renderTags() {
-        const tagsList = document.getElementById('tags-list');
+        const tagsList = $('#tags-list');
         const tagsArray = Array.from(this.tags);
 
         if (tagsArray.length === 0) {
@@ -470,13 +531,13 @@ class CicadaApp {
         }).join('');
 
         // Add click handlers
-        document.querySelectorAll('.tag-item').forEach(item => {
+        $$('.tag-item').forEach(item => {
             item.addEventListener('click', () => {
                 const tag = item.dataset.tag;
                 this.currentTag = this.currentTag === tag ? null : tag;
                 this.currentFilter = 'all';
                 
-                document.querySelectorAll('.filters li').forEach(li => li.classList.remove('active'));
+                $$('.filters li').forEach(li => li.classList.remove('active'));
                 document.querySelector('[data-filter="all"]').classList.add('active');
                 this.updateCurrentViewTitle();
                 
@@ -495,5 +556,5 @@ class CicadaApp {
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', () => {
-    new CicadaApp();
+    cicada = new CicadaApp();
 });
