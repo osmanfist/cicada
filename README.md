@@ -18,4 +18,4 @@ A lightweight, web-based task management system designed specifically for softwa
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/cicada.git
+git clone https://github.com/osmanfist/cicada.git
