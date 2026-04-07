@@ -3,7 +3,7 @@
 A lightweight, web-based task management system designed specifically for software development workflows.
 
 ## Features
-
+    Yea yea yeah
 - **Task Management**: Create, complete, and delete development tasks
 - **Priority Levels**: Low, Medium, High, Critical
 - **Time Estimation**: Track estimated hours per task
@@ -18,4 +18,5 @@ A lightweight, web-based task management system designed specifically for softwa
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/cicada.git
+git clone https://github.com/osmanfist/cicada.git
+
